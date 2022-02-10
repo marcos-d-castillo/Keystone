@@ -1,11 +1,13 @@
-from app import app
+from app import app, cors
+from flask_cors import cross_origin
 import time
 
 @app.route('/')
-@app.route('/index')
-def index():
-    return "Hello, World!"
+@cross_origin()
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/time')
+@app.route('/api/time')
+@cross_origin()
 def get_current_time():
     return {'time': time.time()}
