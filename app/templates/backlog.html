@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h3>Backlog</h3>
+    <div>
+        {% for task in tasks %}
+        {% if task.status == status.backlog %}
+           <div><a href="{{ url_for('editTask', taskId=task.id) }}">{{ task.title }}</a></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+    <br>
+    <p>
+        <a href="{{ url_for('addTask') }}">Add a new task</a>
+    </p>
+
+{% endblock %}
