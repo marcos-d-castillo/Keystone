@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h3>Dashboard</h3>
+    <hr>
+    <h4>{{ moment(time).format('LL') }}</h4>
+    <div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
+        <div class="item" style="flex-grow: 1;">
+            <h4>Daily</h4>
+            <hr>
+            <br>
+            {% for task in tasks %}
+            {% if task.status == status.daily %}
+                <div><p>{{ task.title }}</p></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="item" style="flex-grow: 1;">
+            <h4>To-do</h4>
+            <hr>
+            <br>
+            {% for task in tasks %}
+            {% if task.status == status.todo and task.date.date() == time.date() %}
+                <div><a href="{{ url_for('editTask', taskId=task.id) }}">{{ task.title }}</a></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <p>
+        <a href="{{ url_for('addTask') }}">Add a new task</a>
+    </p>
+
+{% endblock %}
