@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h3>Daily</h3>
+    <div>
+        {% for task in tasks %}
+        {% if task.status == status.daily %}
+            <div><p>{{ task.title }}</p></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+    <br>
+    <p>
+        <a href="{{ url_for('addTask') }}">Add a new task</a>
+    </p>
+
+{% endblock %}

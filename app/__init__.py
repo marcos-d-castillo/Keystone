@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+# TODO - log to stdout config, app factory pattern
 
 
 from app import routes, models

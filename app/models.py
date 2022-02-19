@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     first_login = db.Column(db.Boolean, default=True)
+    first_edit = db.Column(db.Boolean, default=True)
     tasks = db.relationship('Task', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -59,4 +60,7 @@ def load_user(user_id):
 # td = datetime.datetime.now()
 # t3 = Task(title='Dinner with Aki', description='Figure out what to bring!', status='todo', date=td, user_id=3)
 
-
+u = User.query.get(3)
+u.first_login = True
+u.first_edit = True
+db.session.commit()
