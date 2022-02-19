@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn keystone:app
+web: gunicorn keystone:app
