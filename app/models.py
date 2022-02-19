@@ -60,7 +60,7 @@ def load_user(user_id):
 # td = datetime.datetime.now()
 # t3 = Task(title='Dinner with Aki', description='Figure out what to bring!', status='todo', date=td, user_id=3)
 
-u = User.query.get(3)
-u.first_login = True
-u.first_edit = True
-db.session.commit()
+# u = User.query.get(3)
+# u.first_login = True
+# u.first_edit = True
+# db.session.commit()
