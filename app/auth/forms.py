@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+
 from app.models import User
 
 
@@ -28,12 +29,3 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Sorry, there\'s already an account registered with that email. Try logging in to '
                                   'that account or provide a different email.')
-
-
-class AddTaskForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description')
-    date = DateField('Date')
-    moveToTodo = BooleanField('Ready for To-do?')
-    submit = SubmitField('Submit')
-    delete = SubmitField('Delete')

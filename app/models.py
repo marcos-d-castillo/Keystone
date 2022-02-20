@@ -1,9 +1,9 @@
-import datetime
-
-from app import db, login
 import enum
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db, login
 
 
 # create script for changes:  flask db migrate -m "changes message"

@@ -20,27 +20,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('dashboard') }}">Keystone</a>
+                <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">Keystone</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('backlog') }}">Backlog</a></li>
+                    <li><a href="{{ url_for('main.backlog') }}">Backlog</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('progressBoard') }}">Progress Board</a></li>
+                    <li><a href="{{ url_for('main.progressBoard') }}">Progress Board</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('calendar') }}">Calendar</a></li>
+                    <li><a href="{{ url_for('main.calendar') }}">Calendar</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('daily') }}">Daily</a></li>
+                    <li><a href="{{ url_for('main.daily') }}">Daily</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     {% else %}
                     <li>
                         <div class="dropdown">
@@ -50,7 +50,7 @@
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Customize Theme</a>
                             <a class="dropdown-item" href="#">View Workflow Demo</a>
-                            <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
                           </div>
                         </div>
                     </li>

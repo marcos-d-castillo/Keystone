@@ -4,13 +4,13 @@
     <h3>Progress Board</h3>
     <div>
         {% for task in tasks %}
-           <div><a href="{{ url_for('editTask', taskId=task.id) }}">{{ task.title }}</a></div>
+           <div><a href="{{ url_for('main.editTask', taskId=task.id) }}">{{ task.title }}</a></div>
         {% endfor %}
     </div>
     <hr>
     <br>
     <p>
-        <a href="{{ url_for('addTask') }}">Add a new task</a>
+        <a href="{{ url_for('main.addTask') }}">Add a new task</a>
     </p>
 
 {% endblock %}
