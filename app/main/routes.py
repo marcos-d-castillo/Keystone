@@ -30,7 +30,6 @@ from app.models import User, Task, StatusEnum
 @login_required
 def dashboard():
     today = datetime.datetime.today()
-    print(today.date())
     if current_user.first_login:
         flash('A demonstration of the Keystone workflow is available in the dropdown menu in the upper right corner. '
               'It can be viewed anytime.')
