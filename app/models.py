@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     first_login = db.Column(db.Boolean, default=True)
     first_edit = db.Column(db.Boolean, default=True)
+    profile_icon = db.Column(db.String(255))
     tasks = db.relationship('Task', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -41,6 +42,8 @@ class Task(db.Model):
     date = db.Column(db.DateTime)
     status = db.Column(db.Enum(StatusEnum))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    icon = db.Column(db.String(255))
+    marked_for_complete = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<Task {}>'.format(self.title)
