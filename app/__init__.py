@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_cors import CORS, cross_origin
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_moment import Moment
@@ -11,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
 
+cors = CORS()
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
@@ -25,6 +27,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Extension initialization
+    cors.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
     db.init_app(app)

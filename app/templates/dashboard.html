@@ -4,6 +4,7 @@
     <h3>Dashboard</h3>
     <hr>
     <h4>{{ moment(time).format('LL') }}</h4>
+    <hr>
     <div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
         <div class="item" style="flex-grow: 1;">
             <h4>Daily</h4>
@@ -21,14 +22,21 @@
             <br>
             {% for task in tasks %}
             {% if task.status == status.todo and task.date.date() == time.date() %}
-                <div><a href="{{ url_for('main.editTask', taskId=task.id) }}">{{ task.title }}</a></div>
+                <div><a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a></div>
             {% endif %}
             {% endfor %}
         </div>
     </div>
+    <hr>
     <br>
-    <p>
-        <a href="{{ url_for('main.addTask') }}">Add a new task</a>
-    </p>
+    <a href="{{ url_for('main.addTask') }}">
+    <button type="button" class="btn btn-success">
+            Add New Task
+    </button>
+    </a>
+<!--    BUTTON TO TRIGGER MODAL     -->
+<!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTask">-->
+<!--            Add New Task-->
+<!--   </button>-->
 
 {% endblock %}

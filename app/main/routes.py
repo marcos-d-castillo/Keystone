@@ -1,5 +1,6 @@
 import datetime
 
+import requests
 from flask import request, render_template, flash, redirect, url_for
 from flask_login import current_user, login_required
 
@@ -8,11 +9,7 @@ from app.main import bp
 from app.main.forms import AddTaskForm
 from app.models import User, Task, StatusEnum
 
-
 # TODO:
-#         - Dates and Times (for microservice)
-#         - API (for microservice)
-#         - Add theme to user table to be able to set theme colors
 #         - Add warning before task delete
 #         - Tour of Keystone
 #         - Hover tool tips
@@ -23,6 +20,31 @@ from app.models import User, Task, StatusEnum
 #
 #         Optional:
 #                       - User Notifications
+
+getIconsUrl = 'https://icon-depot.herokuapp.com/icons'
+
+
+def getIcons():
+    iconNames = ["face", "favorite", "shopping_cart", "star_rate", "flight_takeoff", "emoji_emotions", "sentiment_neutral",
+             "emoji_people", "emoji_nature", "self_improvement", "hiking", "catching_pokemon", "sports_martial_arts"]
+
+    data = {"icon_list": ["face", "favorite", "shopping_cart", "star_rate", "flight_takeoff", "emoji_emotions", "sentiment_neutral",
+             "emoji_people", "emoji_nature", "self_improvement", "hiking", "catching_pokemon", "sports_martial_arts"]}
+
+    headers = {"Content-Type": "application/json"}
+
+    r = requests.post(getIconsUrl, json=data, headers=headers).json()
+    icons = [(None, " -")]
+
+    counter = 0
+    for icon in r['html']:
+        icons.append((icon, iconNames[counter]))
+        counter += 1
+
+    return icons
+
+
+icons = getIcons()
 
 
 @bp.route('/')
@@ -78,20 +100,22 @@ def daily():
 @login_required
 def addTask():
     form = AddTaskForm()
+    form.icon.choices = [(icon[1], icon[1].replace("_", " ")) for icon in icons]
+    iconsToDisplay = [icon[0] for icon in icons if icon[0] is not None]
 
     if form.validate_on_submit():
-        status = StatusEnum.todo if form.moveToTodo.data else StatusEnum.backlog
-        print('DATE: ', form.date.data)
+        status = None
+        if form.status.data:
+            status = getTaskStatus(form.status.data)
         task = Task(title=form.title.data, description=form.description.data, date=form.date.data,
-                    status=status, user_id=current_user.id)
+                    status=status, icon=form.icon.data, user_id=current_user.id)
         db.session.add(task)
         db.session.commit()
         flash(f'Task created: {task.title}')
 
-        print(request.args.keys())
         return redirect(url_for('main.dashboard'))
 
-    return render_template('addTask.html', title='Add Task', form=form)
+    return render_template('addTask.html', title='Add Task', form=form, icons=iconsToDisplay)
 
 
 @bp.route('/editTask', methods=['GET', 'POST'])
@@ -105,8 +129,14 @@ def editTask():
         db.session.commit()
 
     task = Task.query.get(request.args.get('taskId'))
-    isReady = (task.status == StatusEnum.todo)
-    form = AddTaskForm(title=task.title, description=task.description, date=task.date, moveToTodo=isReady)
+    # print(task.icon.data)
+    # if not task.icon or '<' not in task.icon:
+    #     icon = getIconHtml(task.icon)
+    # else:
+    #     icon = task.icon
+    form = AddTaskForm(title=task.title, description=task.description, date=task.date, status=task.status, icon=task.icon)
+    form.icon.choices = icons
+    # form.icon = task.icon
 
     if form.validate_on_submit():
         if form.delete.data:
@@ -116,19 +146,38 @@ def editTask():
 
             return redirect(url_for('main.dashboard'))
 
-        status = StatusEnum.todo if form.moveToTodo.data else StatusEnum.backlog
+        if type(task.status) is StatusEnum:
+            status = task.status
+        else:
+            status = getTaskStatus(task.status)
 
         task.title = form.title.data
         task.description = form.description.data
         task.date = form.date.data
         task.status = status
+        task.icon = form.icon.data
 
         db.session.commit()
-        if request.args.get('moveToTodo'):
-            flash("Remember not to overload yourself with too many tasks!")
 
         flash(f'Task edited: {task.title}')
 
         return redirect(url_for('main.dashboard'))
 
     return render_template('editTask.html', title='Edit Task', form=form)
+
+
+def getTaskStatus(status):
+    if status == 'backlog':
+        return StatusEnum.backlog
+    elif status == 'todo':
+        return StatusEnum.todo
+    elif status == 'complete':
+        return StatusEnum.complete
+    elif status == 'daily':
+        return StatusEnum.daily
+
+
+def getIconHtml(iconName):
+    for iconTuple in icons:
+        if iconTuple[1] == iconName:
+            return iconTuple[0]

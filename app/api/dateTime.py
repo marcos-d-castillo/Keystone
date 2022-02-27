@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 from flask import request, jsonify
+from flask_cors import cross_origin
 
 from app.api import bp
 
@@ -35,6 +36,7 @@ tzDict = {
 
 
 @bp.route('/datetime', methods=['GET', 'POST'])
+@cross_origin()
 def get_datetime():
     r = request.get_json()
     sec = int(r['datetime'])
@@ -50,6 +52,7 @@ def get_datetime():
 
 
 @bp.route('/timezones', methods=['GET'])
+@cross_origin()
 def get_timezones():
     res = []
     for key in tzDict.keys():

@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+
+
+
 {% block app_content %}
     <h1>Add Task</h1>
     <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
+        <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+
+        {{ wtf.form_field(form.title) }}
+        {{ wtf.form_field(form.description) }}
+        {{ wtf.form_field(form.date) }}
+        {{ wtf.form_field(form.status) }}
+
+
+        <br>
+
+        {% for choice in icons %}
+            {{ choice | safe }}
+        {% endfor %}
+
+        {{ wtf.form_field(form.icon) }}
+        {{ wtf.form_field(form.submit) }}
+        {{ wtf.form_field(form.delete) }}
+    </form>
     </div>
 {% endblock %}
