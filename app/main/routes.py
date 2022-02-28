@@ -17,9 +17,8 @@ from app.models import User, Task, StatusEnum
 #         - Email for notification alerts <--- Need to view both original tutorial and app restructure tutorial
 #         - Email password reset
 #         - Merge Add / Edit Task?
-#
-#         Optional:
-#                       - User Notifications
+
+
 
 getIconsUrl = 'https://icon-depot.herokuapp.com/icons'
 
