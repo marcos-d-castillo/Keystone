@@ -54,8 +54,5 @@ def get_datetime():
 @bp.route('/timezones', methods=['GET'])
 @cross_origin()
 def get_timezones():
-    res = []
-    for key in tzDict.keys():
-        res.append(str(key))
 
-    return jsonify(res)
+    return jsonify(tzDict)
