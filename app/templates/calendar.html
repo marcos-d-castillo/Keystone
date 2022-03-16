@@ -1,18 +1,39 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h3>Calendar</h3>
-    <div>
-        {% for task in tasks %}
-        {% if task.status == status.todo %}
-            <div><p>{{ task.title }}</p></div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <hr>
+    <div id="calendar"></div>
     <br>
-    <p>
-        <a href="{{ url_for('main.addTask') }}">Add a new task</a>
-    </p>
+    <a href="{{ url_for('main.addTask') }}">
+    <button type="button" class="btn btn-success">
+            Add New Task
+    </button>
+    </a>
+{% endblock %}
 
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+<script>
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        themeSystem: 'bootstrap5',
+        events: [
+            {% for task in tasks %}
+            {% if task.status == 'todo' and task.date %}
+            {
+             title: "{{ task.title | safe }}",
+             start: "{{ task.date }}",
+             allDay: true,
+             editable: true,
+             display: 'list-item',
+             url: "{{ url_for('main.editTask', taskId=task.id) }}",
+            },
+            {% endif %}
+            {% endfor %}
+        ]
+    });
+
+    calendar.render();
+</script>
 {% endblock %}

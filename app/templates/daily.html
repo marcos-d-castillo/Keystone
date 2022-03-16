@@ -1,18 +1,58 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h3>Daily</h3>
-    <div>
-        {% for task in tasks %}
-        {% if task.status == status.daily %}
-            <div><p>{{ task.title }}</p></div>
-        {% endif %}
-        {% endfor %}
+<h3>Daily</h3>
+<hr>
+<div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
+    <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                {% for task in tasks %}
+                {% if task.status == 'daily' %}
+                <button class="nav-link" id="v-pills-{{ task.title | lower | replace(" ", "-") }}-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-{{ task.title | lower | replace(" ", "-") }}" type="button" role="tab"
+                        aria-controls="v-pills-{{ task.title | lower | replace(" ", "-") }}" aria-selected="false">{{ task.title }}
+                </button>
+                {% endif %}
+                {% endfor %}
+            </div>
     </div>
-    <hr>
-    <br>
-    <p>
-        <a href="{{ url_for('main.addTask') }}">Add a new task</a>
-    </p>
-
+    <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+            <div class="tab-content" id="v-pills-tabContent">
+                {% for task in tasks %}
+                {% if task.status == 'daily' %}
+                <div class="tab-pane" id="v-pills-{{ task.title | lower | replace(" ", "-") }}" role="tabpanel"
+                     aria-labelledby="v-pills-{{ task.title | lower | replace(" ", "-") }}-tab">
+                    <div>Title:  {{ task.title }}</div>
+                    <br>
+                    <div>
+                        Description:  {{ task.description }}
+                    </div>
+                    <br>
+                    <div>
+                        Icon:
+                        {% if task.icon != None and task.icon != ' -' %}
+                        {{ iconDict[task.icon] | safe }}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <br>
+                    <hr>
+                    <br>
+                    <a href="{{ url_for('main.editDailyTask', taskId=task.id) }}">
+                        <button type="button" class="btn btn-default">
+                            Edit Task
+                        </button>
+                    </a>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+</div>
+<br>
+<a href="{{ url_for('main.addDailyTask') }}">
+    <button type="button" class="btn btn-success">
+        Add New Task
+    </button>
+</a>
 {% endblock %}

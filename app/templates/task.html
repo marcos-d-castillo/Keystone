@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <h1>{{ formType }}</h1>
+    <div class="row">
+        <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+
+        {{ wtf.form_field(form.title) }}
+        {{ wtf.form_field(form.description) }}
+        {{ wtf.form_field(form.date) }}
+        {{ wtf.form_field(form.status) }}
+
+        <br>
+
+        {% for i in iconDict.keys() %}
+            <span data-toggle="tooltip" data-placement="top" title="{{ i }}">
+            {{ iconDict[i] | safe }}
+            </span>
+        {% endfor %}
+        {{ wtf.form_field(form.icon) }}
+
+        {{ wtf.form_field(form.submit) }}
+        {% if formType != 'Add Task' %}
+        {{ wtf.form_field(form.delete) }}
+        {% endif %}
+    </form>
+    </div>
+{% endblock %}
