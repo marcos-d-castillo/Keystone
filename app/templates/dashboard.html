@@ -1,42 +1,46 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h3>Dashboard</h3>
-    <hr>
-    <h4>{{ moment(time).format('LL') }}</h4>
-    <hr>
-    <div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
-        <div class="item" style="flex-grow: 1;">
-            <h4>Daily</h4>
-            <hr>
-            <br>
-            {% for task in tasks %}
-            {% if task.status == status.daily %}
-                <div><p>{{ task.title }}</p></div>
+<h3>Dashboard</h3>
+<hr>
+<h4>{{ moment(time).format('LL') }}</h4>
+<hr>
+<div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
+    <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+        <h4>Daily</h4>
+        <hr>
+        <br>
+        {% for task in tasks %}
+        {% if task.status == 'daily' %}
+        <div>
+            {% if task.icon %}
+            {{ iconDict[task.icon] | safe }}
             {% endif %}
-            {% endfor %}
+            <span>{{ task.title }}</span>
         </div>
-        <div class="item" style="flex-grow: 1;">
-            <h4>To-do</h4>
-            <hr>
-            <br>
-            {% for task in tasks %}
-            {% if task.status == status.todo and task.date.date() == time.date() %}
-                <div><a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a></div>
-            {% endif %}
-            {% endfor %}
-        </div>
+        {% endif %}
+        {% endfor %}
     </div>
-    <hr>
-    <br>
-    <a href="{{ url_for('main.addTask') }}">
+    <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+        <h4>To-do</h4>
+        <hr>
+        <br>
+        {% for task in tasks %}
+        {% if task.status == 'todo' and task.date.date() == time.date() %}
+        <div>
+            {% if task.icon %}
+            {{ iconDict[task.icon] | safe }}
+            {% endif %}
+            <a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<br>
+<a href="{{ url_for('main.addTask') }}">
     <button type="button" class="btn btn-success">
-            Add New Task
+        Add New Task
     </button>
-    </a>
-<!--    BUTTON TO TRIGGER MODAL     -->
-<!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTask">-->
-<!--            Add New Task-->
-<!--   </button>-->
-
+</a>
 {% endblock %}

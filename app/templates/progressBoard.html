@@ -2,15 +2,58 @@
 
 {% block app_content %}
     <h3>Progress Board</h3>
-    <div>
-        {% for task in tasks %}
-           <div><a href="{{ url_for('main.editTask', taskId=task.id) }}">{{ task.title }}</a></div>
-        {% endfor %}
-    </div>
     <hr>
+     <div class="container" style="display: flex; flex-flow: row; justify-content: space-evenly; align-items: stretch;">
+        <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+            <h4>Backlog</h4>
+            <hr>
+            <br>
+            {% for task in tasks %}
+            {% if task.status == 'backlog' %}
+               <div>
+                   {% if task.icon %}
+                        {{ iconDict[task.icon] | safe }}
+                    {% endif %}
+                   <a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a>
+               </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+            <h4>To-do</h4>
+            <hr>
+            <br>
+            {% for task in tasks %}
+            {% if task.status == 'todo' %}
+                <div>
+                    {% if task.icon %}
+                        {{ iconDict[task.icon] | safe }}
+                    {% endif %}
+                    <a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+         <div class="item col overflow-auto h-100 bg-light border rounded-3 p-3" style="flex-grow: 1; min-height: 50vh">
+            <h4>Complete</h4>
+            <hr>
+            <br>
+            {% for task in tasks %}
+            {% if task.status == 'complete' %}
+                <div>
+                    {% if task.icon %}
+                        {{ iconDict[task.icon] | safe }}
+                    {% endif %}
+                    <a href="{{ url_for('main.editTask', taskId=task.id) }}" style="text-decoration: none">{{ task.title }}</a>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
     <br>
-    <p>
-        <a href="{{ url_for('main.addTask') }}">Add a new task</a>
-    </p>
-
+    <a href="{{ url_for('main.addTask') }}">
+    <button type="button" class="btn btn-success">
+            Add New Task
+    </button>
+    </a>
 {% endblock %}
